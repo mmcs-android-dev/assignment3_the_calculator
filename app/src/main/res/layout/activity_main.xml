@@ -13,7 +13,347 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="16dp"
         tools:context=".view.MainActivity">
+
+        <!-- Display for calculation results -->
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="#EFEFEF"
+            android:gravity="end"
+            android:padding="16dp"
+            android:text="@{viewModel.displayValue}"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="0" />
+
+        <!-- Operation display -->
+        <TextView
+            android:id="@+id/operation_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:padding="8dp"
+            android:text="@{viewModel.operationDisplay}"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/result_text"
+            tools:text="5 + " />
+
+        <!-- Row 1: Clear, Backspace, %, / -->
+        <Button
+            android:id="@+id/button_clear"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.clear()}"
+            android:text="C"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_7"
+            app:layout_constraintEnd_toStartOf="@id/button_backspace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/operation_text"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_backspace"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.backspace()}"
+            android:text="⌫"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_8"
+            app:layout_constraintEnd_toStartOf="@id/button_percent"
+            app:layout_constraintStart_toEndOf="@id/button_clear"
+            app:layout_constraintTop_toBottomOf="@id/operation_text"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_percent"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.setOperation(Operation.PERCENT)}"
+            android:text="%"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_9"
+            app:layout_constraintEnd_toStartOf="@id/button_divide"
+            app:layout_constraintStart_toEndOf="@id/button_backspace"
+            app:layout_constraintTop_toBottomOf="@id/operation_text"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_divide"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="#FF9800"
+            android:onClick="@{() -> viewModel.setOperation(Operation.DIVIDE)}"
+            android:text="÷"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_multiply"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_percent"
+            app:layout_constraintTop_toBottomOf="@id/operation_text"
+            app:layout_constraintVertical_weight="1" />
+
+        <!-- Row 2: 7, 8, 9, * -->
+        <Button
+            android:id="@+id/button_7"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('7')}"
+            android:text="7"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_4"
+            app:layout_constraintEnd_toStartOf="@id/button_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_clear"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_8"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('8')}"
+            android:text="8"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_5"
+            app:layout_constraintEnd_toStartOf="@id/button_9"
+            app:layout_constraintStart_toEndOf="@id/button_7"
+            app:layout_constraintTop_toBottomOf="@id/button_backspace"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_9"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('9')}"
+            android:text="9"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_6"
+            app:layout_constraintEnd_toStartOf="@id/button_multiply"
+            app:layout_constraintStart_toEndOf="@id/button_8"
+            app:layout_constraintTop_toBottomOf="@id/button_percent"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_multiply"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="#FF9800"
+            android:onClick="@{() -> viewModel.setOperation(Operation.MULTIPLY)}"
+            android:text="×"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_subtract"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_9"
+            app:layout_constraintTop_toBottomOf="@id/button_divide"
+            app:layout_constraintVertical_weight="1" />
+
+        <!-- Row 3: 4, 5, 6, - -->
+        <Button
+            android:id="@+id/button_4"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('4')}"
+            android:text="4"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_1"
+            app:layout_constraintEnd_toStartOf="@id/button_5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_7"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_5"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('5')}"
+            android:text="5"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_2"
+            app:layout_constraintEnd_toStartOf="@id/button_6"
+            app:layout_constraintStart_toEndOf="@id/button_4"
+            app:layout_constraintTop_toBottomOf="@id/button_8"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_6"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('6')}"
+            android:text="6"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_3"
+            app:layout_constraintEnd_toStartOf="@id/button_subtract"
+            app:layout_constraintStart_toEndOf="@id/button_5"
+            app:layout_constraintTop_toBottomOf="@id/button_9"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_subtract"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="#FF9800"
+            android:onClick="@{() -> viewModel.setOperation(Operation.SUBTRACT)}"
+            android:text="-"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_add"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_6"
+            app:layout_constraintTop_toBottomOf="@id/button_multiply"
+            app:layout_constraintVertical_weight="1" />
+
+        <!-- Row 4: 1, 2, 3, + -->
+        <Button
+            android:id="@+id/button_1"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('1')}"
+            android:text="1"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_sign"
+            app:layout_constraintEnd_toStartOf="@id/button_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_4"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_2"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('2')}"
+            android:text="2"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_0"
+            app:layout_constraintEnd_toStartOf="@id/button_3"
+            app:layout_constraintStart_toEndOf="@id/button_1"
+            app:layout_constraintTop_toBottomOf="@id/button_5"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_3"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('3')}"
+            android:text="3"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_decimal"
+            app:layout_constraintEnd_toStartOf="@id/button_add"
+            app:layout_constraintStart_toEndOf="@id/button_2"
+            app:layout_constraintTop_toBottomOf="@id/button_6"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_add"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="#FF9800"
+            android:onClick="@{() -> viewModel.setOperation(Operation.ADD)}"
+            android:text="+"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/button_equals"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_3"
+            app:layout_constraintTop_toBottomOf="@id/button_subtract"
+            app:layout_constraintVertical_weight="1" />
+
+        <!-- Row 5: +/-, 0, ., = -->
+        <Button
+            android:id="@+id/button_sign"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.toggleSign()}"
+            android:text="+/-"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_1"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_0"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDigit('0')}"
+            android:text="0"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_decimal"
+            app:layout_constraintStart_toEndOf="@id/button_sign"
+            app:layout_constraintTop_toBottomOf="@id/button_2"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_decimal"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:onClick="@{() -> viewModel.appendDecimal()}"
+            android:text="."
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_equals"
+            app:layout_constraintStart_toEndOf="@id/button_0"
+            app:layout_constraintTop_toBottomOf="@id/button_3"
+            app:layout_constraintVertical_weight="1" />
+
+        <Button
+            android:id="@+id/button_equals"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            android:backgroundTint="#4CAF50"
+            android:onClick="@{() -> viewModel.calculate()}"
+            android:text="="
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_decimal"
+            app:layout_constraintTop_toBottomOf="@id/button_add"
+            app:layout_constraintVertical_weight="1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
