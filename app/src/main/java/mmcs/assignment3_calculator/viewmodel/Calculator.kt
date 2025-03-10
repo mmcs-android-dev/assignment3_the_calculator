@@ -2,7 +2,7 @@ package mmcs.assignment3_calculator.viewmodel
 
 import androidx.databinding.ObservableField
 
-enum class Operation { ADD, SUB, MUL, DIV }
+enum class Operation { ADD, SUB, MUL, DIV, PERC, NEG }
 
 interface Calculator {
 
